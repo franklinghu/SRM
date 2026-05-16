@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: srm-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: srm_password
+      MYSQL_DATABASE: srm_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+    networks:
+      - srm-network
+
+  redis:
+    image: redis:7.0-alpine
+    container_name: srm-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - srm-network
+
+  backend:
+    build:
+      context: ./srm-backend
+      dockerfile: Dockerfile
+    container_name: srm-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - srm-network
+
+  frontend:
+    build:
+      context: ./srm-frontend
+      dockerfile: Dockerfile
+    container_name: srm-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - srm-network
+
+volumes:
+  mysql_data:
+  redis_data:
+
+networks:
+  srm-network:
+    driver: bridge
