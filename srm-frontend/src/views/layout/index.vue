@@ -10,6 +10,45 @@
           <el-menu-item index="/dashboard">
             <span>工作台</span>
           </el-menu-item>
+          <el-menu-item index="/supplier">
+            <span>供应商管理</span>
+          </el-menu-item>
+          <el-sub-menu index="purchase">
+            <template #title>
+              <span>采购管理</span>
+            </template>
+            <el-menu-item index="/purchase/request">
+              <span>采购需求</span>
+            </el-menu-item>
+            <el-menu-item index="/purchase/order">
+              <span>采购订单</span>
+            </el-menu-item>
+          </el-sub-menu>
+          <el-menu-item index="/contract">
+            <span>合同管理</span>
+          </el-menu-item>
+          <el-sub-menu index="evaluation">
+            <template #title>
+              <span>绩效评估</span>
+            </template>
+            <el-menu-item index="/evaluation/template">
+              <span>评估模板</span>
+            </el-menu-item>
+            <el-menu-item index="/evaluation/evaluation">
+              <span>供应商评估</span>
+            </el-menu-item>
+          </el-sub-menu>
+          <el-sub-menu index="finance">
+            <template #title>
+              <span>财务管理</span>
+            </template>
+            <el-menu-item index="/finance/invoice">
+              <span>发票管理</span>
+            </el-menu-item>
+            <el-menu-item index="/finance/payment">
+              <span>付款申请</span>
+            </el-menu-item>
+          </el-sub-menu>
         </el-menu>
       </el-aside>
       <el-container>

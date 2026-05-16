@@ -4,6 +4,7 @@ services:
   mysql:
     image: mysql:8.0
     container_name: srm-mysql
+    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: srm_password
       MYSQL_DATABASE: srm_db
@@ -11,17 +12,29 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-    command: --default-authentication-plugin=mysql_native_password
+      - ./srm-backend/src/main/resources/db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-psrm_password"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - srm-network
 
   redis:
     image: redis:7.0-alpine
     container_name: srm-redis
+    restart: unless-stopped
     ports:
       - "6379:6379"
     volumes:
       - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - srm-network
 
@@ -30,13 +43,17 @@ services:
       context: ./srm-backend
       dockerfile: Dockerfile
     container_name: srm-backend
+    restart: unless-stopped
     ports:
       - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=prod
+      - JWT_SECRET=your-256-bit-secret-key-for-jwt-signing-must-be-at-least-256-bits-long
     depends_on:
-      - mysql
-      - redis
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     networks:
       - srm-network
 
@@ -45,6 +62,7 @@ services:
       context: ./srm-frontend
       dockerfile: Dockerfile
     container_name: srm-frontend
+    restart: unless-stopped
     ports:
       - "80:80"
     depends_on:

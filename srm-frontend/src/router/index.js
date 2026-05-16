@@ -16,6 +16,51 @@ const routes = [
         path: 'dashboard',
         name: 'Dashboard',
         component: () => import('@/views/dashboard/index.vue')
+      },
+      {
+        path: 'supplier',
+        name: 'Supplier',
+        component: () => import('@/views/supplier/index.vue')
+      },
+      {
+        path: 'supplier/:id',
+        name: 'SupplierDetail',
+        component: () => import('@/views/supplier/detail.vue')
+      },
+      {
+        path: 'purchase/request',
+        name: 'PurchaseRequest',
+        component: () => import('@/views/purchase/request/index.vue')
+      },
+      {
+        path: 'purchase/order',
+        name: 'PurchaseOrder',
+        component: () => import('@/views/purchase/order/index.vue')
+      },
+      {
+        path: 'contract',
+        name: 'Contract',
+        component: () => import('@/views/contract/index.vue')
+      },
+      {
+        path: 'evaluation/template',
+        name: 'EvaluationTemplate',
+        component: () => import('@/views/evaluation/template.vue')
+      },
+      {
+        path: 'evaluation/evaluation',
+        name: 'SupplierEvaluation',
+        component: () => import('@/views/evaluation/evaluation.vue')
+      },
+      {
+        path: 'finance/invoice',
+        name: 'Invoice',
+        component: () => import('@/views/finance/invoice.vue')
+      },
+      {
+        path: 'finance/payment',
+        name: 'Payment',
+        component: () => import('@/views/finance/payment.vue')
       }
     ]
   }

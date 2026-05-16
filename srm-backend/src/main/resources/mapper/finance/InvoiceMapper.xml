@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.srm.modules.finance.mapper.InvoiceMapper">
+
+    <select id="selectPageList" resultType="com.srm.modules.finance.entity.Invoice">
+        SELECT * FROM invoice
+        <where>
+            tenant_id = #{tenantId}
+            <if test="invoiceNo != null and invoiceNo != ''">
+                AND invoice_no LIKE CONCAT('%', #{invoiceNo}, '%')
+            </if>
+            <if test="status != null and status != ''">
+                AND status = #{status}
+            </if>
+        </where>
+        ORDER BY created_at DESC
+    </select>
+
+</mapper>
