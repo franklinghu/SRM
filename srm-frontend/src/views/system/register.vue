@@ -17,16 +17,16 @@
         <el-divider content-position="left">基本信息</el-divider>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="供应商名称" prop="name">
-              <el-input v-model="form.name" placeholder="请输入公司全称" />
+            <el-form-item label="供应商名称" prop="supplierName">
+              <el-input v-model="form.supplierName" placeholder="请输入公司全称" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="供应商类型" prop="type">
-              <el-select v-model="form.type" placeholder="请选择类型" style="width: 100%">
-                <el-option label="生产型供应商" value="生产型" />
-                <el-option label="贸易型供应商" value="贸易型" />
-                <el-option label="服务型供应商" value="服务型" />
+            <el-form-item label="供应商类型" prop="supplierType">
+              <el-select v-model="form.supplierType" placeholder="请选择类型" style="width: 100%">
+                <el-option label="生产型供应商" :value="1" />
+                <el-option label="贸易型供应商" :value="2" />
+                <el-option label="服务型供应商" :value="3" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -179,8 +179,8 @@ const formRef = ref()
 const loading = ref(false)
 
 const form = reactive({
-  name: '',
-  type: '',
+  supplierName: '',
+  supplierType: '',
   industry: '',
   region: '',
   address: '',
@@ -218,8 +218,8 @@ const validatePhone = (rule, value, callback) => {
 }
 
 const rules = {
-  name: [{ required: true, message: '请输入供应商名称', trigger: 'blur' }],
-  type: [{ required: true, message: '请选择供应商类型', trigger: 'change' }],
+  supplierName: [{ required: true, message: '请输入供应商名称', trigger: 'blur' }],
+  supplierType: [{ required: true, message: '请选择供应商类型', trigger: 'change' }],
   industry: [{ required: true, message: '请选择所属行业', trigger: 'change' }],
   region: [{ required: true, message: '请输入所在地区', trigger: 'blur' }],
   contactName: [{ required: true, message: '请输入联系人姓名', trigger: 'blur' }],
