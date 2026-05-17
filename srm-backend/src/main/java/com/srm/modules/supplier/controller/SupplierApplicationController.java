@@ -22,14 +22,12 @@ public class SupplierApplicationController {
 
     @PostMapping("/supplier-applications")
     public Result<SupplierApplication> createApplication(@RequestBody SupplierApplicationDTO dto) {
-        SupplierApplication application = applicationService.createApplication(dto);
-        return Result.success(application);
-    }
-
-    @GetMapping("/supplier-applications/public")
-    public Result<SupplierApplication> createPublicApplication(@RequestBody SupplierApplicationDTO dto) {
-        SupplierApplication application = applicationService.createApplication(dto);
-        return Result.success(application);
+        try {
+            SupplierApplication application = applicationService.createApplication(dto);
+            return Result.success(application);
+        } catch (Exception e) {
+            return Result.error(e.getMessage());
+        }
     }
 
     @GetMapping("/supplier-applications/{id}")

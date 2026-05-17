@@ -66,7 +66,9 @@ public class SupplierApplicationServiceImpl implements SupplierApplicationServic
         application.setFinancialReportUrl(dto.getFinancialReportUrl());
         application.setOtherDocumentsUrl(dto.getOtherDocumentsUrl());
         application.setUsername(dto.getUsername());
-        application.setPassword(passwordEncoder.encode(dto.getPassword()));
+        if (dto.getPassword() != null && !dto.getPassword().isEmpty()) {
+            application.setPassword(passwordEncoder.encode(dto.getPassword()));
+        }
         application.setStatus("pending");
         application.setCurrentStep(0);
         

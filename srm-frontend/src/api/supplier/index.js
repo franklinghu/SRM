@@ -123,7 +123,7 @@ export function getApplicationDetail(id) {
 
 export function submitSupplierApplication(data) {
   return request({
-    url: '/supplier-applications/public',
+    url: '/supplier-applications',
     method: 'post',
     data
   })
