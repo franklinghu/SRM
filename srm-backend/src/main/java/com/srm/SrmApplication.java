@@ -1,5 +1,6 @@
 package com.srm;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.srm.modules.sys.entity.SysUser;
 import com.srm.modules.sys.mapper.SysUserMapper;
 import lombok.RequiredArgsConstructor;
@@ -24,14 +25,18 @@ public class SrmApplication {
     @Bean
     public CommandLineRunner initAdminUser(SysUserMapper userMapper) {
         return args -> {
-            // 检查是否已存在管理员用户
-            SysUser existingAdmin = userMapper.selectById(1L);
-            if (existingAdmin == null) {
+            // 查找 admin 用户
+            LambdaQueryWrapper<SysUser> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(SysUser::getUsername, "admin");
+            SysUser admin = userMapper.selectOne(wrapper);
+            
+            String encodedPassword = passwordEncoder.encode("admin123");
+            
+            if (admin == null) {
                 // 创建管理员用户
-                SysUser admin = new SysUser();
-                admin.setId(1L);
+                admin = new SysUser();
                 admin.setUsername("admin");
-                admin.setPassword(passwordEncoder.encode("admin123"));
+                admin.setPassword(encodedPassword);
                 admin.setRealName("系统管理员");
                 admin.setEmail("admin@example.com");
                 admin.setStatus(1);
@@ -40,7 +45,11 @@ public class SrmApplication {
                 userMapper.insert(admin);
                 log.info("✅ 管理员用户创建成功 - 用户名: admin, 密码: admin123");
             } else {
-                log.info("ℹ️  管理员用户已存在，用户名: {}", existingAdmin.getUsername());
+                // 更新管理员密码
+                admin.setPassword(encodedPassword);
+                admin.setStatus(1);
+                userMapper.updateById(admin);
+                log.info("✅ 管理员密码已更新 - 用户名: admin, 密码: admin123");
             }
         };
     }
