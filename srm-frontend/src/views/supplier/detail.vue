@@ -11,29 +11,29 @@
             </div>
           </template>
           <el-descriptions :column="2" border>
-            <el-descriptions-item label="供应商编码">{{ supplier.supplierCode || '-'"></el-descriptions-item>
-            <el-descriptions-item label="供应商名称">{{ supplier.supplierName || '-'"></el-descriptions-item>
+            <el-descriptions-item label="供应商编码">{{ supplier.supplierCode || '-' }}</el-descriptions-item>
+            <el-descriptions-item label="供应商名称">{{ supplier.supplierName || '-' }}</el-descriptions-item>
             <el-descriptions-item label="简称">{{ supplier.shortName || '-' }}</el-descriptions-item>
             <el-descriptions-item label="类型">{{ getTypeName(supplier.supplierType) }}</el-descriptions-item>
-            <el-descriptions-item label="所属行业">{{ supplier.industry || '-'"></el-descriptions-item>
-            <el-descriptions-item label="信用等级">{{ supplier.creditLevel || '-'"></el-descriptions-item>
+            <el-descriptions-item label="所属行业">{{ supplier.industry || '-' }}</el-descriptions-item>
+            <el-descriptions-item label="信用等级">{{ supplier.creditLevel || '-' }}</el-descriptions-item>
             <el-descriptions-item label="联系人">{{ supplier.contactName || '-' }}</el-descriptions-item>
-            <el-descriptions-item label="联系电话">{{ supplier.contactPhone || '-'"></el-descriptions-item>
-            <el-descriptions-item label="联系邮箱">{{ supplier.contactEmail || '-'"></el-descriptions-item>
+            <el-descriptions-item label="联系电话">{{ supplier.contactPhone || '-' }}</el-descriptions-item>
+            <el-descriptions-item label="联系邮箱">{{ supplier.contactEmail || '-' }}</el-descriptions-item>
             <el-descriptions-item label="状态">
               <el-tag :type="getStatusType(supplier.status)">
                 {{ getStatusName(supplier.status) }}
               </el-tag>
             </el-descriptions-item>
-            <el-descriptions-item label="国家">{{ supplier.country || '-'"></el-descriptions-item>
-            <el-descriptions-item label="省份">{{ supplier.province || '-'"></el-descriptions-item>
+            <el-descriptions-item label="国家">{{ supplier.country || '-' }}</el-descriptions-item>
+            <el-descriptions-item label="省份">{{ supplier.province || '-' }}</el-descriptions-item>
             <el-descriptions-item label="城市">{{ supplier.city || '-' }}</el-descriptions-item>
             <el-descriptions-item label="官网">{{ supplier.website || '-' }}</el-descriptions-item>
-            <el-descriptions-item label="税号">{{ supplier.taxNumber || '-'"></el-descriptions-item>
-            <el-descriptions-item label="开户银行">{{ supplier.bankName || '-'"></el-descriptions-item>
-            <el-descriptions-item label="银行账号">{{ supplier.bankAccount || '-'"></el-descriptions-item>
-            <el-descriptions-item label="员工人数">{{ supplier.employeeCount || '-'"></el-descriptions-item>
-            <el-descriptions-item label="详细地址" :span="2">{{ supplier.address || '-'"></el-descriptions-item>
+            <el-descriptions-item label="税号">{{ supplier.taxNumber || '-' }}</el-descriptions-item>
+            <el-descriptions-item label="开户银行">{{ supplier.bankName || '-' }}</el-descriptions-item>
+            <el-descriptions-item label="银行账号">{{ supplier.bankAccount || '-' }}</el-descriptions-item>
+            <el-descriptions-item label="员工人数">{{ supplier.employeeCount || '-' }}</el-descriptions-item>
+            <el-descriptions-item label="详细地址" :span="2">{{ supplier.address || '-' }}</el-descriptions-item>
             <el-descriptions-item label="公司简介" :span="2">{{ supplier.intro || '-' }}</el-descriptions-item>
           </el-descriptions>
         </el-card>
