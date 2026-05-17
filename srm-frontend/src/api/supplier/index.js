@@ -108,7 +108,7 @@ export function getExpiringCertificates(params) {
 
 export function getApplicationList(params) {
   return request({
-    url: '/supplier-applications/list',
+    url: '/supplier-applications',
     method: 'get',
     params
   })
@@ -133,7 +133,10 @@ export function approveApplication(id, data) {
   return request({
     url: `/supplier-applications/${id}/approve`,
     method: 'post',
-    data
+    params: {
+      action: 'approve',
+      comment: data.comment
+    }
   })
 }
 
@@ -141,6 +144,8 @@ export function rejectApplication(id, data) {
   return request({
     url: `/supplier-applications/${id}/reject`,
     method: 'post',
-    data
+    params: {
+      comment: data.comment
+    }
   })
 }

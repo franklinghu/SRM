@@ -54,10 +54,19 @@ public class SupplierApplicationController {
     @PostMapping("/supplier-applications/{id}/approve")
     public Result<SupplierApplication> approve(
             @PathVariable Long id,
-            @RequestParam Long approverId,
+            @RequestParam(required = false, defaultValue = "1") Long approverId,
             @RequestParam String action,
             @RequestParam(required = false) String comment) {
         SupplierApplication application = applicationService.approve(id, approverId, action, comment);
+        return Result.success(application);
+    }
+
+    @PostMapping("/supplier-applications/{id}/reject")
+    public Result<SupplierApplication> reject(
+            @PathVariable Long id,
+            @RequestParam(required = false, defaultValue = "1") Long approverId,
+            @RequestParam(required = false) String comment) {
+        SupplierApplication application = applicationService.approve(id, approverId, "reject", comment);
         return Result.success(application);
     }
 
