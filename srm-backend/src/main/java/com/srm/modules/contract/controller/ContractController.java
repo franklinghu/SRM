@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/contract")
+@RequestMapping("/api/contracts")
 @RequiredArgsConstructor
 public class ContractController {
 
