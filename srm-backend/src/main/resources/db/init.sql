@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS supplier_certificate (
 
 -- 插入测试用户 (密码: admin123)
 INSERT INTO sys_user (username, password, real_name, email, status, tenant_id)
-VALUES ('admin', '$2a$10$XQnS4f8L7Z5mQvJ1wY1kKO5g8zX0kY2sD3p6wR9xB2mN4cV5uJ6fG', '系统管理员', 'admin@example.com', 1, 1);
+VALUES ('admin', '$2a$10$N9qo8uLOickgx2ZMRZoMye.IjzqAKL9xL5jvMFVdNJHvGCgTq/VEq', '系统管理员', 'admin@example.com', 1, 1);
 
 -- 插入测试供应商数据
 INSERT INTO supplier (supplier_code, supplier_name, short_name, supplier_type, industry, country, province, city, address, contact_name, contact_phone, contact_email, credit_level, status, tenant_id, created_by) VALUES 
