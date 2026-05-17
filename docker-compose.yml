@@ -44,8 +44,6 @@ services:
       dockerfile: Dockerfile
     container_name: srm-backend
     restart: unless-stopped
-    ports:
-      - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=prod
       - JWT_SECRET=your-256-bit-secret-key-for-jwt-signing-must-be-at-least-256-bits-long
