@@ -17,10 +17,9 @@
         </el-form-item>
         <el-form-item label="审批状态">
           <el-select v-model="queryForm.status" placeholder="请选择状态" clearable style="width: 150px">
-            <el-option label="待审批" :value="0" />
-            <el-option label="审批中" :value="1" />
-            <el-option label="已通过" :value="2" />
-            <el-option label="已拒绝" :value="3" />
+            <el-option label="待审批" value="pending" />
+            <el-option label="已通过" value="approved" />
+            <el-option label="已拒绝" value="rejected" />
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -44,15 +43,15 @@
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="createTime" label="申请时间" width="170">
+        <el-table-column prop="createdAt" label="申请时间" width="170">
           <template #default="{ row }">
-            {{ formatDate(row.createTime) }}
+            {{ formatDate(row.createdAt) }}
           </template>
         </el-table-column>
         <el-table-column label="操作" width="180" fixed="right">
           <template #default="{ row }">
             <el-button type="primary" link @click="handleView(row)">查看详情</el-button>
-            <template v-if="row.status === 0 || row.status === 1">
+            <template v-if="row.status === 'pending'">
               <el-button type="success" link @click="handleApprove(row)">通过</el-button>
               <el-button type="danger" link @click="handleReject(row)">拒绝</el-button>
             </template>
@@ -178,20 +177,18 @@ const approvalTitle = ref('审批')
 
 const getStatusName = (status) => {
   const statusMap = {
-    0: '待审批',
-    1: '审批中',
-    2: '已通过',
-    3: '已拒绝'
+    'pending': '待审批',
+    'approved': '已通过',
+    'rejected': '已拒绝'
   }
   return statusMap[status] || '-'
 }
 
 const getStatusType = (status) => {
   const typeMap = {
-    0: 'warning',
-    1: 'primary',
-    2: 'success',
-    3: 'danger'
+    'pending': 'warning',
+    'approved': 'success',
+    'rejected': 'danger'
   }
   return typeMap[status] || 'info'
 }

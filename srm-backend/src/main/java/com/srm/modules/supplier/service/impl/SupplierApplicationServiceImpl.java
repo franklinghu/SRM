@@ -117,19 +117,9 @@ public class SupplierApplicationServiceImpl implements SupplierApplicationServic
             throw new RuntimeException("申请不存在");
         }
         
-        ApprovalFlow flow = getApprovalFlow("SUPPLIER_APPROVAL");
-        List<ApprovalStep> steps = getApprovalSteps(flow.getId());
-        
-        ApprovalRecord record = new ApprovalRecord();
-        record.setApplicationId(applicationId);
-        record.setStepId(steps.get(application.getCurrentStep() - 1).getId());
-        record.setStepNo(application.getCurrentStep());
-        record.setStepName(steps.get(application.getCurrentStep() - 1).getStepName());
-        record.setApproverId(approverId);
-        record.setApproverName("用户" + approverId);
-        record.setAction(action);
-        record.setComment(comment);
-        recordMapper.insert(record);
+        if (!"pending".equals(application.getStatus())) {
+            throw new RuntimeException("申请已处理");
+        }
         
         if ("reject".equals(action)) {
             application.setStatus("rejected");
@@ -138,16 +128,9 @@ public class SupplierApplicationServiceImpl implements SupplierApplicationServic
             return application;
         }
         
-        if (application.getCurrentStep() >= steps.size()) {
-            application.setStatus("approved");
-            createSupplierFromApplication(application);
-        } else {
-            application.setCurrentStep(application.getCurrentStep() + 1);
-            if (application.getCurrentStep() <= steps.size()) {
-                application.setCurrentApproverId(steps.get(application.getCurrentStep() - 1).getId());
-            }
-        }
-        
+        // 批准申请，直接创建供应商和用户
+        application.setStatus("approved");
+        createSupplierFromApplication(application);
         applicationMapper.updateById(application);
         return application;
     }
