@@ -1,6 +1,7 @@
 package com.srm;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.srm.modules.supplier.service.SupplierApplicationService;
 import com.srm.modules.sys.entity.SysUser;
 import com.srm.modules.sys.mapper.SysUserMapper;
 import lombok.RequiredArgsConstructor;
@@ -51,6 +52,14 @@ public class SrmApplication {
                 userMapper.updateById(admin);
                 log.info("✅ 管理员密码已更新 - 用户名: admin, 密码: admin123");
             }
+        };
+    }
+
+    @Bean
+    public CommandLineRunner initApprovalFlow(SupplierApplicationService applicationService) {
+        return args -> {
+            applicationService.createDefaultApprovalFlow();
+            log.info("✅ 审批流程初始化完成");
         };
     }
 }

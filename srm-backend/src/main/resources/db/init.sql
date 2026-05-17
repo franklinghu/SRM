@@ -286,3 +286,79 @@ INSERT INTO invoice (invoice_no, supplier_id, invoice_type, amount, tax_amount, 
 INSERT INTO payment_request (request_no, supplier_id, invoice_id, amount, payment_date, payment_method, status, tenant_id, created_by) VALUES 
 ('PAY202405001', 2, 2, 195000.00, '2024-06-15', 'bank', 'paid', 1, 1),
 ('PAY202405002', 1, 1, 48000.00, '2024-06-20', 'bank', 'approved', 1, 1);
+
+-- 供应商申请表
+CREATE TABLE IF NOT EXISTS supplier_application (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '申请ID',
+    apply_no VARCHAR(50) NOT NULL UNIQUE COMMENT '申请编号',
+    supplier_name VARCHAR(200) NOT NULL COMMENT '供应商名称',
+    short_name VARCHAR(100) COMMENT '简称',
+    supplier_type TINYINT COMMENT '类型：1制造商 2代理商 3服务商',
+    industry VARCHAR(100) COMMENT '所属行业',
+    country VARCHAR(50) COMMENT '国家',
+    province VARCHAR(50) COMMENT '省份',
+    city VARCHAR(50) COMMENT '城市',
+    address VARCHAR(255) COMMENT '详细地址',
+    contact_name VARCHAR(100) COMMENT '联系人',
+    contact_phone VARCHAR(20) COMMENT '联系电话',
+    contact_email VARCHAR(100) COMMENT '联系邮箱',
+    website VARCHAR(255) COMMENT '官网',
+    tax_number VARCHAR(50) COMMENT '税号',
+    bank_name VARCHAR(100) COMMENT '开户行',
+    bank_account VARCHAR(100) COMMENT '银行账号',
+    register_capital DECIMAL(15,2) COMMENT '注册资本',
+    employee_count INT COMMENT '员工人数',
+    intro TEXT COMMENT '公司简介',
+    business_license_url VARCHAR(255) COMMENT '营业执照URL',
+    financial_report_url VARCHAR(255) COMMENT '财务报表URL',
+    other_documents_url VARCHAR(255) COMMENT '其他资料URL',
+    status VARCHAR(20) DEFAULT 'pending' COMMENT '状态：pending/approved/rejected',
+    reject_reason TEXT COMMENT '驳回原因',
+    current_approver_id BIGINT COMMENT '当前审批人ID',
+    current_step INT DEFAULT 0 COMMENT '当前步骤',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_status (status)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='供应商申请表';
+
+-- 审批流程表
+CREATE TABLE IF NOT EXISTS approval_flow (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '流程ID',
+    flow_name VARCHAR(100) NOT NULL COMMENT '流程名称',
+    flow_code VARCHAR(50) NOT NULL UNIQUE COMMENT '流程编码',
+    module VARCHAR(50) COMMENT '所属模块',
+    status TINYINT DEFAULT 1 COMMENT '状态：0禁用 1启用',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='审批流程表';
+
+-- 审批步骤表
+CREATE TABLE IF NOT EXISTS approval_step (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '步骤ID',
+    flow_id BIGINT NOT NULL COMMENT '流程ID',
+    step_no INT NOT NULL COMMENT '步骤序号',
+    step_name VARCHAR(100) NOT NULL COMMENT '步骤名称',
+    role_code VARCHAR(50) COMMENT '角色编码',
+    user_id BIGINT COMMENT '审批人ID',
+    is_required TINYINT DEFAULT 1 COMMENT '是否必填：0否 1是',
+    is_parallel TINYINT DEFAULT 0 COMMENT '是否并行：0否 1是',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_flow_id (flow_id),
+    FOREIGN KEY (flow_id) REFERENCES approval_flow(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='审批步骤表';
+
+-- 审批记录表
+CREATE TABLE IF NOT EXISTS approval_record (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '记录ID',
+    application_id BIGINT NOT NULL COMMENT '申请ID',
+    step_id BIGINT COMMENT '步骤ID',
+    step_no INT COMMENT '步骤序号',
+    step_name VARCHAR(100) COMMENT '步骤名称',
+    approver_id BIGINT COMMENT '审批人ID',
+    approver_name VARCHAR(100) COMMENT '审批人姓名',
+    action VARCHAR(20) COMMENT '操作：approve/reject',
+    comment TEXT COMMENT '审批意见',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_application_id (application_id),
+    FOREIGN KEY (application_id) REFERENCES supplier_application(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='审批记录表';
