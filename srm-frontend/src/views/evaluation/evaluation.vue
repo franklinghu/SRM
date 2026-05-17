@@ -24,6 +24,7 @@
 
       <el-table :data="tableData" border stripe>
         <el-table-column prop="evaluationNo" label="评估编号" width="140" />
+        <el-table-column prop="supplierName" label="供应商" width="200" />
         <el-table-column prop="evaluationPeriod" label="评估周期" width="140" />
         <el-table-column prop="evaluationDate" label="评估日期" width="120" />
         <el-table-column prop="totalScore" label="总分" width="100">
@@ -72,6 +73,16 @@
       @close="resetForm"
     >
       <el-form ref="formRef" :model="form" :rules="rules" label-width="120px">
+        <el-form-item label="供应商" prop="supplierId">
+          <el-select v-model="form.supplierId" placeholder="请选择供应商" style="width: 100%" clearable>
+            <el-option 
+              v-for="supplier in supplierList" 
+              :key="supplier.id" 
+              :label="supplier.supplierName" 
+              :value="supplier.id" 
+            />
+          </el-select>
+        </el-form-item>
         <el-form-item label="评估编号" prop="evaluationNo">
           <el-input v-model="form.evaluationNo" placeholder="请输入评估编号" />
         </el-form-item>
@@ -120,8 +131,10 @@
 import { ref, reactive, onMounted, computed } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { getEvaluationList, createEvaluation, updateEvaluation, deleteEvaluation } from '@/api/evaluation'
+import { getSupplierList } from '@/api/supplier'
 
 const tableData = ref([])
+const supplierList = ref([])
 const total = ref(0)
 const dialogVisible = ref(false)
 const submitLoading = ref(false)
@@ -150,7 +163,8 @@ const form = reactive({
 })
 
 const rules = {
-  evaluationNo: [{ required: true, message: '请输入评估编号', trigger: 'blur' }]
+  evaluationNo: [{ required: true, message: '请输入评估编号', trigger: 'blur' }],
+  supplierId: [{ required: true, message: '请选择供应商', trigger: 'change' }]
 }
 
 const getStatusName = (status) => {
@@ -181,10 +195,26 @@ const getLevelType = (level) => {
   return typeMap[level] || 'info'
 }
 
+const loadSuppliers = async () => {
+  try {
+    const res = await getSupplierList({ pageNum: 1, pageSize: 1000 })
+    supplierList.value = res.data.records || []
+  } catch (error) {
+    console.error('加载供应商列表失败:', error)
+  }
+}
+
 const loadData = async () => {
   try {
     const res = await getEvaluationList(queryForm)
-    tableData.value = res.data.records || []
+    const records = res.data.records || []
+    tableData.value = records.map(item => {
+      const supplier = supplierList.value.find(s => s.id === item.supplierId)
+      return {
+        ...item,
+        supplierName: supplier?.supplierName || '-'
+      }
+    })
     total.value = res.data.total || 0
   } catch (error) {
     console.error('加载评估列表失败:', error)
@@ -266,7 +296,7 @@ const resetForm = () => {
 }
 
 onMounted(() => {
-  loadData()
+  loadSuppliers().then(() => loadData())
 })
 </script>
 
