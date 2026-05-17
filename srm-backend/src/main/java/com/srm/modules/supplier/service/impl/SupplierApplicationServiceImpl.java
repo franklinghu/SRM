@@ -211,12 +211,12 @@ public class SupplierApplicationServiceImpl implements SupplierApplicationServic
         flowMapper.insert(flow);
         
         String[][] steps = {
-            {"1", "采购员", "PURCHASER", 1L},
-            {"2", "采购经理", "PURCHASE_MANAGER", 1L},
-            {"3", "品质部", "QUALITY_DEPT", 1L},
-            {"4", "事业部", "BUSINESS_UNIT", 1L},
-            {"5", "财务部", "FINANCE_DEPT", 1L},
-            {"6", "总经办", "EXECUTIVE_OFFICE", 1L}
+            {"1", "采购员", "PURCHASER"},
+            {"2", "采购经理", "PURCHASE_MANAGER"},
+            {"3", "品质部", "QUALITY_DEPT"},
+            {"4", "事业部", "BUSINESS_UNIT"},
+            {"5", "财务部", "FINANCE_DEPT"},
+            {"6", "总经办", "EXECUTIVE_OFFICE"}
         };
         
         for (String[] step : steps) {
@@ -225,7 +225,7 @@ public class SupplierApplicationServiceImpl implements SupplierApplicationServic
             approvalStep.setStepNo(Integer.parseInt(step[0]));
             approvalStep.setStepName(step[1]);
             approvalStep.setRoleCode(step[2]);
-            approvalStep.setUserId(Long.parseLong(step[3]));
+            approvalStep.setUserId(1L);
             approvalStep.setIsRequired(1);
             approvalStep.setIsParallel(0);
             stepMapper.insert(approvalStep);
