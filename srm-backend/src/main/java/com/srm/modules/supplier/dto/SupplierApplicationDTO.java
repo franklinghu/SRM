@@ -26,4 +26,6 @@ public class SupplierApplicationDTO {
     private String businessLicenseUrl;
     private String financialReportUrl;
     private String otherDocumentsUrl;
+    private String username;
+    private String password;
 }

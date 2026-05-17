@@ -105,3 +105,42 @@ export function getExpiringCertificates(params) {
     params
   })
 }
+
+export function getApplicationList(params) {
+  return request({
+    url: '/supplier-applications/list',
+    method: 'get',
+    params
+  })
+}
+
+export function getApplicationDetail(id) {
+  return request({
+    url: `/supplier-applications/${id}`,
+    method: 'get'
+  })
+}
+
+export function submitSupplierApplication(data) {
+  return request({
+    url: '/supplier-applications/public',
+    method: 'post',
+    data
+  })
+}
+
+export function approveApplication(id, data) {
+  return request({
+    url: `/supplier-applications/${id}/approve`,
+    method: 'post',
+    data
+  })
+}
+
+export function rejectApplication(id, data) {
+  return request({
+    url: `/supplier-applications/${id}/reject`,
+    method: 'post',
+    data
+  })
+}

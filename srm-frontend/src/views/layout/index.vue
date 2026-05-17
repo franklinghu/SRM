@@ -13,6 +13,9 @@
           <el-menu-item index="/supplier">
             <span>供应商管理</span>
           </el-menu-item>
+          <el-menu-item index="/supplier-application/approval">
+            <span>注册审批</span>
+          </el-menu-item>
           <el-sub-menu index="purchase">
             <template #title>
               <span>采购管理</span>

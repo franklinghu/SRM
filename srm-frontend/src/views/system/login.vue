@@ -2,7 +2,7 @@
   <div class="login-container">
     <el-card class="login-card">
       <template #header>
-        <h2>SRM系统登录</h2>
+        <h2>SRM供应商管理系统</h2>
       </template>
       <el-form :model="loginForm" :rules="rules" ref="formRef">
         <el-form-item prop="username">
@@ -29,6 +29,17 @@
             @click="handleLogin"
           >
             登录
+          </el-button>
+        </el-form-item>
+        <el-divider>或</el-divider>
+        <el-form-item>
+          <el-button
+            text
+            type="primary"
+            style="width: 100%"
+            @click="goToRegister"
+          >
+            供应商自助注册
           </el-button>
         </el-form-item>
       </el-form>
@@ -69,6 +80,10 @@ const handleLogin = async () => {
   } finally {
     loading.value = false
   }
+}
+
+const goToRegister = () => {
+  router.push('/register')
 }
 </script>
 

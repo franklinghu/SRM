@@ -35,6 +35,9 @@ public class SupplierApplication {
     private String financialReportUrl;
     private String otherDocumentsUrl;
     
+    private String username;
+    private String password;
+    
     private String status;
     private String rejectReason;
     

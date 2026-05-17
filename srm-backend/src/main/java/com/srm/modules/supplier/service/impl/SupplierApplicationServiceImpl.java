@@ -7,8 +7,11 @@ import com.srm.modules.supplier.dto.SupplierApplicationDTO;
 import com.srm.modules.supplier.entity.*;
 import com.srm.modules.supplier.mapper.*;
 import com.srm.modules.supplier.service.SupplierApplicationService;
+import com.srm.modules.sys.entity.SysUser;
+import com.srm.modules.sys.mapper.SysUserMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +29,8 @@ public class SupplierApplicationServiceImpl implements SupplierApplicationServic
     private final ApprovalRecordMapper recordMapper;
     private final SupplierMapper supplierMapper;
     private final SupplierCertificateMapper certificateMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final SysUserMapper userMapper;
 
     @Override
     @Transactional
@@ -53,6 +58,8 @@ public class SupplierApplicationServiceImpl implements SupplierApplicationServic
         application.setBusinessLicenseUrl(dto.getBusinessLicenseUrl());
         application.setFinancialReportUrl(dto.getFinancialReportUrl());
         application.setOtherDocumentsUrl(dto.getOtherDocumentsUrl());
+        application.setUsername(dto.getUsername());
+        application.setPassword(passwordEncoder.encode(dto.getPassword()));
         application.setStatus("pending");
         application.setCurrentStep(0);
         
@@ -159,7 +166,20 @@ public class SupplierApplicationServiceImpl implements SupplierApplicationServic
         supplier.setIntro(application.getIntro());
         supplier.setStatus(1);
         supplier.setTenantId(1L);
+        supplier.setCreatedBy(application.getId());
         supplierMapper.insert(supplier);
+        
+        if (application.getUsername() != null && !application.getUsername().isEmpty()) {
+            SysUser user = new SysUser();
+            user.setUsername(application.getUsername());
+            user.setPassword(application.getPassword());
+            user.setRealName(application.getContactName());
+            user.setEmail(application.getContactEmail());
+            user.setStatus(1);
+            user.setTenantId(supplier.getId());
+            userMapper.insert(user);
+            log.info("✅ 供应商用户创建成功 - 用户名: {}, 供应商ID: {}", application.getUsername(), supplier.getId());
+        }
     }
 
     @Override

@@ -8,6 +8,11 @@ const routes = [
     component: () => import('@/views/system/login.vue')
   },
   {
+    path: '/register',
+    name: 'Register',
+    component: () => import('@/views/system/register.vue')
+  },
+  {
     path: '/',
     component: () => import('@/views/layout/index.vue'),
     redirect: '/dashboard',
@@ -26,6 +31,11 @@ const routes = [
         path: 'supplier/:id',
         name: 'SupplierDetail',
         component: () => import('@/views/supplier/detail.vue')
+      },
+      {
+        path: 'supplier-application/approval',
+        name: 'SupplierApplicationApproval',
+        component: () => import('@/views/supplier/application-approval.vue')
       },
       {
         path: 'purchase/request',
@@ -74,7 +84,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const userStore = useUserStore()
 
-  if (to.path !== '/login' && !userStore.token) {
+  if (to.path !== '/login' && to.path !== '/register' && !userStore.token) {
     next('/login')
   } else {
     next()
