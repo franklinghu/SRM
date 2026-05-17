@@ -21,8 +21,14 @@ public class Supplier {
     private String city;
     private String address;
     private String contactName;
+    private String contactPosition;
     private String contactPhone;
     private String contactEmail;
+    private String region;
+    private String businessLicense;
+    private String registeredCapital;
+    private String mainProducts;
+    private String annualRevenue;
     private String website;
     private String taxNumber;
     private String bankName;
